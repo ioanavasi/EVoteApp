@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EVoteApp</string>
+    <string name="hide_content_description">Hide</string>
+    <string name="show_content_description">Show</string>
 </resources>
