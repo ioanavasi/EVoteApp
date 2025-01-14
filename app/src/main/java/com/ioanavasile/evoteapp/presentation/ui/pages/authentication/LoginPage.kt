@@ -1,4 +1,4 @@
-package com.ioanavasile.evoteapp.presentation.ui.authentication
+package com.ioanavasile.evoteapp.presentation.ui.pages.authentication
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import com.ioanavasile.evoteapp.presentation.ui.state.AuthState
 import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 
 @Composable
-fun LoginScreen(viewModel: AuthViewModel, navController: NavController) {
+fun LoginPage(viewModel: AuthViewModel, navController: NavController) {
     val loginState by viewModel.loginState.collectAsState()
 
     when (loginState) {
@@ -41,7 +41,7 @@ fun LoginScreen(viewModel: AuthViewModel, navController: NavController) {
             }
         }
         is AuthState.Success -> {
-            navController.navigate("home")
+            navController.navigate("vote")
         }
         is AuthState.Error -> {
             val errorMessage = (loginState as AuthState.Error).message

@@ -1,9 +1,8 @@
-package com.ioanavasile.evoteapp.presentation.ui.authentication
+package com.ioanavasile.evoteapp.presentation.ui.pages.authentication
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,14 +34,20 @@ import androidx.navigation.NavController
 import com.ioanavasile.evoteapp.R
 
 @Composable
-fun LoginForm(
+fun RegisterForm(
     navController: NavController,
-    onLoginClicked: (String, String) -> Unit,
+    onRegisterClicked: (String, String, String, String, String) -> Unit,
 ) {
     var cnp by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     var isCnpValid by remember { mutableStateOf(false) }
+    var isEmailValid by remember { mutableStateOf(false) }
+    var isFirstNameValid by remember { mutableStateOf(false) }
+    var isLastNameValid by remember { mutableStateOf(false) }
     var isPasswordValid by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -60,6 +65,45 @@ fun LoginForm(
             },
             label = { Text("CNP") },
             isError = !isCnpValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = email,
+            onValueChange = {
+                email = it
+                isEmailValid = it.isNotBlank()
+            },
+            label = { Text("Email") },
+            isError = !isEmailValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = firstName,
+            onValueChange = {
+                firstName = it
+                isFirstNameValid = it.isNotBlank()
+            },
+            label = { Text("First Name") },
+            isError = !isFirstNameValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = lastName,
+            onValueChange = {
+                lastName = it
+                isLastNameValid = it.isNotBlank()
+            },
+            label = { Text("Last Name") },
+            isError = !isLastNameValid,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -93,27 +137,28 @@ fun LoginForm(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { onLoginClicked(cnp, password) },
+            onClick = { onRegisterClicked(cnp, email, firstName, lastName, password) },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isCnpValid && isPasswordValid
+            enabled = isCnpValid && isPasswordValid && isEmailValid && isFirstNameValid
+                    && isLastNameValid
         ) {
-            Text("Login")
+            Text("Register")
         }
 
         TextButton(
-            onClick = { navController.navigate("register") },
+            onClick = { navController.navigate("login") },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Register")
+            Text("Go to login")
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginFormPreview() {
-    LoginForm(
+fun RegisterFormPreview() {
+    RegisterForm(
         navController = NavController(LocalContext.current),
-        onLoginClicked = { _, _ -> },
+        onRegisterClicked = { _, _, _, _, _ -> },
     )
 }

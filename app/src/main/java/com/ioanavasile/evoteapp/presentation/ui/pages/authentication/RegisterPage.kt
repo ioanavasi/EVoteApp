@@ -1,4 +1,4 @@
-package com.ioanavasile.evoteapp.presentation.ui.authentication
+package com.ioanavasile.evoteapp.presentation.ui.pages.authentication
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import com.ioanavasile.evoteapp.presentation.ui.state.AuthState
 import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 
 @Composable
-fun RegisterScreen(viewModel: AuthViewModel, navController: NavController) {
+fun RegisterPage(viewModel: AuthViewModel, navController: NavController) {
 
     val registerState by viewModel.registerState.collectAsState()
 
