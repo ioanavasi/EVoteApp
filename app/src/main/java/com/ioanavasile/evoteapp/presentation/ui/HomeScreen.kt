@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ioanavasile.evoteapp.presentation.viewModels.LoginViewModel
+import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 
 @Composable
-fun HomeScreen(viewModel: LoginViewModel, navController: NavController) {
+fun HomeScreen(viewModel: AuthViewModel, navController: NavController) {
     Column {
         Spacer(modifier = Modifier.height(100.dp))
         Text("Welcome!")

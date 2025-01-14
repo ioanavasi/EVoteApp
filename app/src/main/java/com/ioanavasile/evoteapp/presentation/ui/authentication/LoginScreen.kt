@@ -14,21 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ioanavasile.evoteapp.presentation.ui.state.LoginState
-import com.ioanavasile.evoteapp.presentation.viewModels.LoginViewModel
+import com.ioanavasile.evoteapp.presentation.ui.state.AuthState
+import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
+fun LoginScreen(viewModel: AuthViewModel, navController: NavController) {
     val loginState by viewModel.loginState.collectAsState()
 
     when (loginState) {
-        is LoginState.Idle -> {
+        is AuthState.Idle -> {
             LoginForm(
                 navController = navController,
                 onLoginClicked = { cnp, password -> viewModel.login(cnp, password) },
             )
         }
-        is LoginState.Loading -> {
+        is AuthState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -40,11 +40,11 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
                 )
             }
         }
-        is LoginState.Success -> {
+        is AuthState.Success -> {
             navController.navigate("home")
         }
-        is LoginState.Error -> {
-            val errorMessage = (loginState as LoginState.Error).message
+        is AuthState.Error -> {
+            val errorMessage = (loginState as AuthState.Error).message
             Text("Error: $errorMessage", color = Color.Red)
         }
     }

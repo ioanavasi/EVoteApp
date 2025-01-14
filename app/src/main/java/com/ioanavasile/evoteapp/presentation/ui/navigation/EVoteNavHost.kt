@@ -8,22 +8,22 @@ import androidx.navigation.compose.rememberNavController
 import com.ioanavasile.evoteapp.presentation.ui.HomeScreen
 import com.ioanavasile.evoteapp.presentation.ui.authentication.LoginScreen
 import com.ioanavasile.evoteapp.presentation.ui.authentication.RegisterScreen
-import com.ioanavasile.evoteapp.presentation.viewModels.LoginViewModel
+import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 
 @Composable
 fun EVoteNavHost() {
     val navController = rememberNavController()
-    val loginViewModel: LoginViewModel = hiltViewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(loginViewModel, navController)
+            LoginScreen(authViewModel, navController)
         }
         composable("register") {
-            RegisterScreen(navController)
+            RegisterScreen(authViewModel, navController)
         }
         composable("home") {
-            HomeScreen(loginViewModel, navController)
+            HomeScreen(authViewModel, navController)
         }
     }
 }
