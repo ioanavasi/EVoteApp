@@ -1,4 +1,4 @@
-package com.ioanavasile.evoteapp.presentation.ui.pages.voting
+package com.ioanavasile.evoteapp.presentation.ui.pages.utility
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons

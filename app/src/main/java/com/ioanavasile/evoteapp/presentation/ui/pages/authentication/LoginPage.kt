@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
-import com.ioanavasile.evoteapp.presentation.ui.pages.ErrorPrompt
-import com.ioanavasile.evoteapp.presentation.ui.pages.LoadingAnimation
+import com.ioanavasile.evoteapp.presentation.ui.pages.utility.ErrorPrompt
+import com.ioanavasile.evoteapp.presentation.ui.pages.utility.LoadingAnimation
 import com.ioanavasile.evoteapp.presentation.ui.state.AuthState
 import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 

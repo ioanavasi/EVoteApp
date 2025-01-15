@@ -1,5 +1,6 @@
 package com.ioanavasile.evoteapp.presentation.ui.pages.voting
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ioanavasile.evoteapp.domain.model.Candidate
-import com.ioanavasile.evoteapp.presentation.ui.pages.ErrorPrompt
-import com.ioanavasile.evoteapp.presentation.ui.pages.LoadingAnimation
+import com.ioanavasile.evoteapp.presentation.ui.pages.utility.ErrorPrompt
+import com.ioanavasile.evoteapp.presentation.ui.pages.utility.LoadingAnimation
 import com.ioanavasile.evoteapp.presentation.ui.state.VoteState
 import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 import com.ioanavasile.evoteapp.presentation.viewModels.VoteViewModel
@@ -50,6 +51,7 @@ fun VotePage(
                     navController.navigate("vote")
                 },
                 onHistory = {
+                    voteViewModel.resetVoteState()
                     navController.navigate("history")
                 },
                 onElectionClick = { election ->
@@ -79,6 +81,7 @@ fun VotePage(
                     navController.navigate("vote")
                 },
                 onHistory = {
+                    voteViewModel.resetVoteState()
                     navController.navigate("history")
                 },
                 onCandidateClick = { candidate ->
@@ -121,7 +124,10 @@ fun VotePage(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text("Vote registered!")
                     Spacer(modifier = Modifier.height(20.dp))
                     Button(

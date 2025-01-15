@@ -1,4 +1,4 @@
-package com.ioanavasile.evoteapp.presentation.ui.pages
+package com.ioanavasile.evoteapp.presentation.ui.pages.utility
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button

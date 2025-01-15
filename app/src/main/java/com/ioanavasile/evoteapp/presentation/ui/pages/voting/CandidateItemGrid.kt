@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ioanavasile.evoteapp.domain.model.Candidate
+import com.ioanavasile.evoteapp.presentation.ui.pages.utility.SimpleTopBar
 
 @Composable
 fun CandidateItemGrid(
