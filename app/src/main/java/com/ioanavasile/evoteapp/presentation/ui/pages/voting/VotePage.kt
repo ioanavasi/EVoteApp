@@ -1,32 +1,24 @@
 package com.ioanavasile.evoteapp.presentation.ui.pages.voting
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ioanavasile.evoteapp.domain.model.Candidate
+import com.ioanavasile.evoteapp.presentation.ui.pages.ErrorPrompt
+import com.ioanavasile.evoteapp.presentation.ui.pages.LoadingAnimation
 import com.ioanavasile.evoteapp.presentation.ui.state.VoteState
 import com.ioanavasile.evoteapp.presentation.viewModels.AuthViewModel
 import com.ioanavasile.evoteapp.presentation.viewModels.VoteViewModel
@@ -46,13 +38,24 @@ fun VotePage(
 
         is VoteState.ElectionList -> {
             val elections = (voteState as VoteState.ElectionList).elections
-            LazyColumn {
-                items(elections) { election ->
-                    ElectionItem(election, {
-                        voteViewModel.getCandidates(election)
-                    })
-                }
-            }
+            ElectionItemList(
+                elections = elections,
+                onLogout = {
+                    authViewModel.logout()
+                    authViewModel.resetLoginState()
+                    navController.navigate("login")
+                },
+                onVote = {
+                    voteViewModel.resetVoteState()
+                    navController.navigate("vote")
+                },
+                onHistory = {
+                    navController.navigate("history")
+                },
+                onElectionClick = { election ->
+                    voteViewModel.getCandidates(election)
+                },
+            )
         }
 
         is VoteState.CandidateList -> {
@@ -64,29 +67,27 @@ fun VotePage(
             val showConfirmDialog = remember { mutableStateOf(false) }
             val showConfirmDialogSanityCheck = remember { mutableStateOf(false) }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(candidates.chunked(2)) { rowCandidates ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        for (candidate in rowCandidates) {
-                            CandidateItem(
-                                candidate = candidate,
-                                onCandidateClick = {
-                                    if (!voted) {
-                                        chosenCandidate.value = candidate
-                                        showConfirmDialog.value = true
-                                    }
-                                }
-                            )
-                        }
+            CandidateItemGrid(
+                candidates = candidates,
+                onLogout = {
+                    authViewModel.logout()
+                    authViewModel.resetLoginState()
+                    navController.navigate("login")
+                },
+                onVote = {
+                    voteViewModel.resetVoteState()
+                    navController.navigate("vote")
+                },
+                onHistory = {
+                    navController.navigate("history")
+                },
+                onCandidateClick = { candidate ->
+                    if (!voted) {
+                        chosenCandidate.value = candidate
+                        showConfirmDialog.value = true
                     }
                 }
-            }
+            )
 
             if (showConfirmDialog.value) {
                 ConfirmVoteDialog(
@@ -116,34 +117,33 @@ fun VotePage(
         }
 
         is VoteState.VoteSuccess -> {
-            Column {
-                Spacer(modifier = Modifier.height(100.dp))
-                Text("Vote registered!")
-                Button(
-                    onClick = { voteViewModel.resetVoteState() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Continue")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column {
+                    Text("Vote registered!")
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Button(
+                        onClick = { voteViewModel.resetVoteState() },
+                    ) {
+                        Text("Proceed")
+                    }
                 }
             }
         }
 
         is VoteState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .width(200.dp)
-                        .height(200.dp)
-                )
-            }
+            LoadingAnimation()
         }
 
         is VoteState.Error -> {
             val errorMessage = (voteState as VoteState.Error).message
-            Text("Error: $errorMessage", color = Color.Red)
+            ErrorPrompt(
+                onConfirm = { voteViewModel.resetVoteState() },
+                title = "Voting Error",
+                message = errorMessage
+            )
         }
     }
 }
